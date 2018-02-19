@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Tobii.Research.Addons.Utility
 {
-    internal static class Extensions
+    public static class Extensions
     {
         internal static double Magnitude(float x, float y, float z)
         {
@@ -107,7 +107,7 @@ namespace Tobii.Research.Addons.Utility
             return new Point3D((float)(x / queue.Count), (float)(y / queue.Count), (float)(z / queue.Count));
         }
 
-        internal static Point3D NormalizedPoint2DToPoint3D(this NormalizedPoint2D point2D, DisplayArea displayArea)
+        public static Point3D NormalizedPoint2DToPoint3D(this NormalizedPoint2D point2D, DisplayArea displayArea)
         {
             var dx = displayArea.TopRight.Sub(displayArea.TopLeft).Mul(point2D.X);
             var dy = displayArea.BottomLeft.Sub(displayArea.TopLeft).Mul(point2D.Y);
