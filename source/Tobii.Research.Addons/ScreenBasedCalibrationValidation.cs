@@ -108,7 +108,7 @@ namespace Tobii.Research.Addons
         {
             get
             {
-                if (_timeKeeper.TimedOut)
+                if (_timeKeeper.TimedOut && _data != null)
                 {
                     // To avoid never timing out if we do not get any
                     // data callbacks from the tracker, we need to check
