@@ -15,17 +15,40 @@ namespace Tobii.Research.Addons
 
         public float AveragePrecisionRMS { get; private set; }
 
+
+        public float AverageAccuracyLeft { get; private set; }
+
+        public float AveragePrecisionLeft { get; private set; }
+
+        public float AveragePrecisionRMSLeft { get; private set; }
+
+        public float AverageAccuracyRight { get; private set; }
+
+        public float AveragePrecisionRight { get; private set; }
+
+        public float AveragePrecisionRMSRight { get; private set; }
+
         public CalibrationValidationResult()
         {
             Points = new List<CalibrationValidationPoint>();
         }
 
-        internal void UpdateResult(List<CalibrationValidationPoint> points, float averageAccuracy, float averagePrecision, float averagePrecisionRMS)
+        internal void UpdateResult(List<CalibrationValidationPoint> points, 
+            float averageAccuracy, float averagePrecision, float averagePrecisionRMS,
+            float averageAccuracyLeft, float averagePrecisionLeft, float averagePrecisionRMSLeft,
+            float averageAccuracyRight, float averagePrecisionRight, float averagePrecisionRMSRight
+            )
         {
             Points = points;
             AverageAccuracy = averageAccuracy;
             AveragePrecision = averagePrecision;
             AveragePrecisionRMS = averagePrecisionRMS;
+            AverageAccuracyLeft = averageAccuracyLeft;
+            AveragePrecisionLeft = averagePrecisionLeft;
+            AveragePrecisionRMSLeft = averagePrecisionRMSLeft;
+            AverageAccuracyRight = averageAccuracyRight;
+            AveragePrecisionRight = averagePrecisionRight;
+            AveragePrecisionRMSRight = averagePrecisionRMSRight;
         }
     }
 
@@ -284,7 +307,7 @@ namespace Tobii.Research.Addons
 
             if (points.Count == 0)
             {
-                _latestResult.UpdateResult(points, 0, 0, 0);
+                _latestResult.UpdateResult(points, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             }
             else
             {
@@ -292,22 +315,31 @@ namespace Tobii.Research.Addons
 
                 if (validPoints.Count() == 0)
                 {
-                    _latestResult.UpdateResult(points, 0, 0, 0);
+                    _latestResult.UpdateResult(points, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 }
                 else
                 {
-                    var avaragePrecisionLeftEye = validPoints.Select(p => p.PrecisionLeftEye).Average();
-                    var avaragePrecisionRightEye = validPoints.Select(p => p.PrecisionRightEye).Average();
                     var avarageAccuracyLeftEye = validPoints.Select(p => p.AccuracyLeftEye).Average();
                     var avarageAccuracyRightEye = validPoints.Select(p => p.AccuracyRightEye).Average();
+                    var avaragePrecisionLeftEye = validPoints.Select(p => p.PrecisionLeftEye).Average();
+                    var avaragePrecisionRightEye = validPoints.Select(p => p.PrecisionRightEye).Average();
                     var averagePrecisionLeftEyeRMS = validPoints.Select(p => p.PrecisionLeftEyeRMS).Average();
                     var averagePrecisionRightEyeRMS = validPoints.Select(p => p.PrecisionRightEyeRMS).Average();
 
                     _latestResult.UpdateResult(
                         points,
-                        (avarageAccuracyLeftEye + avarageAccuracyRightEye) / 2.0f,
-                        (avaragePrecisionLeftEye + avaragePrecisionRightEye) / 2.0f,
-                        (averagePrecisionLeftEyeRMS + averagePrecisionRightEyeRMS) / 2.0f);
+                        (avarageAccuracyLeftEye + avarageAccuracyRightEye) / 2,
+                        (avaragePrecisionLeftEye + avaragePrecisionRightEye) / 2,
+                        (averagePrecisionLeftEyeRMS + averagePrecisionRightEyeRMS) / 2,
+
+                        avarageAccuracyLeftEye,
+                        avaragePrecisionLeftEye,
+                        averagePrecisionLeftEyeRMS,
+
+                        avarageAccuracyRightEye,
+                        avaragePrecisionRightEye,
+                        averagePrecisionRightEyeRMS
+                        );
                 }
             }
 
