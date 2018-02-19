@@ -72,6 +72,13 @@ namespace Tobii.Research.Addons
         }
     }
 
+    public enum ValidationState
+    {
+        Idle,
+        NotCollecting,
+        Collecting,
+    }
+
     public class ScreenBasedCalibrationValidation
     {
         public bool IsCollectingData
@@ -91,13 +98,6 @@ namespace Tobii.Research.Addons
             }
         }
 
-        private enum ValidationState
-        {
-            Idle,
-            NotCollecting,
-            Collecting,
-        }
-
         private IEyeTracker _eyeTracker;
         private int _sampleCount;
         private Queue<GazeDataEventArgs> _data;
@@ -108,7 +108,7 @@ namespace Tobii.Research.Addons
         private readonly object _lock = new object();
         private ValidationState _state;
 
-        private ValidationState State
+        public ValidationState State
         {
             get
             {
@@ -118,7 +118,7 @@ namespace Tobii.Research.Addons
                 }
             }
 
-            set
+            private set
             {
                 lock (_lock)
                 {
